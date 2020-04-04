@@ -5,11 +5,17 @@ import importlib.util
 class main:
 #--------------------------------------------------------------------------------------------------------
     # glowny kod programu
-    
+
     def __init__(self):
+
         self.version = "v 1.0.0"
+        self.date = "04.2020"
+        self.build = hash(self.version)
+
         self.modules = []   # obiekt typu lista na wszystkie niezbedne moduly do pracy
         
+        self.welcome_screen()   #ekran powitalny
+
         # zapis aktualnej sciezki do pliku main i modulow
         self.current_path = os.path.dirname(os.path.abspath(__file__)) + "/main.py"
         self.current_mod_path = os.path.dirname(os.path.abspath(__file__))
@@ -18,7 +24,8 @@ class main:
         self.load_modules(self.current_mod_path)
 
         # inicjalizacja znalezionych modulow
-        self.init_modules(self.modules)
+        self.init_modules()
+        print( str(self.modules) )
 
         # w tym miejscu program gotowy do dzialania
 
@@ -69,22 +76,38 @@ class main:
         print( "" )
 
     #metoda testujaca wszystkie zaladowane moduly
-    def init_modules(self,mod_list):
-        print ( "Running self test:" )
-        for module in mod_list: # iterowanie po klasach z modulow
+    def init_modules(self):
+        self.center_print("Running self test:")
+        for module in self.modules: # iterowanie po klasach z modulow
             try:
+                print( "" )
                 module()        # wykonywanie inicjalizacji klasy
                                 # note: wydaje mi sie ze zostal on juz wykonany metoda getattr ale nie ma w docs
             except:
-                print ( " Modules failed. Check module." )
+                print ( " WARNING!!!!! Module failed. Check module." )
+
+                self.modules.remove(module) # usuniecie niedzialajacego modulu z puli
         print( "" )
 
 #--------------------------------------------------------------------------------------------------------
     # metody wizualne 
+
+    # metoda wypisujaca tekst na srodku terminala
+    def center_print(self,text):
+        spaces = int(os.get_terminal_size().columns)
+
+        if type(text) == str:
+            print ( text.center(spaces) )
+
+        else:
+            for line in text:
+                print( line.center(spaces) )
+
     
     # ekran powitalny
     def welcome_screen(self):
-        spaces = int(os.get_terminal_size().columns)
+        text = ["Eva",self.version,"by Jakub Wawak 2020"]
+        self.center_print(text)
 
 # wywolanie glownej funkcji programu
 main()
