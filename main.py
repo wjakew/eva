@@ -3,10 +3,11 @@ import sys
 import importlib.util
 
 class main:
-
+#--------------------------------------------------------------------------------------------------------
     # glowny kod programu
+    
     def __init__(self):
-
+        self.version = "v 1.0.0"
         self.modules = []   # obiekt typu lista na wszystkie niezbedne moduly do pracy
         
         # zapis aktualnej sciezki do pliku main i modulow
@@ -20,6 +21,10 @@ class main:
         self.init_modules(self.modules)
 
         # w tym miejscu program gotowy do dzialania
+
+
+#--------------------------------------------------------------------------------------------------------
+    # metody importowania modulow
 
     # metoda ladujaca moduly ktore pracuja
     def load_modules(self,mod_path):
@@ -74,6 +79,12 @@ class main:
                 print ( " Modules failed. Check module." )
         print( "" )
 
+#--------------------------------------------------------------------------------------------------------
+    # metody wizualne 
+    
+    # ekran powitalny
+    def welcome_screen(self):
+        spaces = int(os.get_terminal_size().columns)
 
 # wywolanie glownej funkcji programu
 main()
