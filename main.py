@@ -1,8 +1,9 @@
 import os
 import sys
-import importlib.util
-
-class main:
+import importlib.util   # import bilbioteki odpowiedzialnej za dynamiczny impot modulow
+import gc               # import garbage colector - pozniej potrzebne do pilnowania pamieci po modulach
+import time
+class Main:
 #--------------------------------------------------------------------------------------------------------
     # glowny kod programu
 
@@ -25,10 +26,34 @@ class main:
 
         # inicjalizacja znalezionych modulow
         self.init_modules()
-        print( str(self.modules) )
 
         # w tym miejscu program gotowy do dzialania
 
+        self.main_loop_()
+
+#--------------------------------------------------------------------------------------------------------
+    # metody zachowania programu 
+
+    def main_brain_(self, user_input):
+
+        if user_input != "exit":
+            print( "echo : " +  user_input )
+        else:
+            sys.exit(0)
+
+    # podstawowa petla programu
+    def main_loop_(self):
+
+        print("")
+        self.center_print("Ready!")
+        
+        # glowna petla programu
+
+        while(True):
+            
+            user_input = str( self.comunication_screen() )
+
+            self.main_brain_(user_input)
 
 #--------------------------------------------------------------------------------------------------------
     # metody importowania modulow
@@ -65,8 +90,10 @@ class main:
 
                     print ( " Import succeeded." )
 
-                except:
-                    print ( " Module : " + obj + " failed to import.")                      
+                except Exception as exception:
+                    print ( " Module : " + obj + " failed to import.")   
+                    print ( " Details: " )
+                    print ( str(type(exception).__name__) )                   
                 
                 # na ta chwile wszystkie zaladowane moduly mamy w obiekcie typu lista
         
@@ -78,15 +105,20 @@ class main:
     #metoda testujaca wszystkie zaladowane moduly
     def init_modules(self):
         self.center_print("Running self test:")
+        count = 0
         for module in self.modules: # iterowanie po klasach z modulow
             try:
                 print( "" )
                 module()        # wykonywanie inicjalizacji klasy
                                 # note: wydaje mi sie ze zostal on juz wykonany metoda getattr ale nie ma w docs
-            except:
+                count+=1
+            except Exception as exception:
                 print ( " WARNING!!!!! Module failed. Check module." )
+                print ( " Details: " )
+                print ( str(type(exception).__name__) )
 
                 self.modules.remove(module) # usuniecie niedzialajacego modulu z puli
+        self.center_print("Self test ended : "+ str(count) + " modules ready to use")
         print( "" )
 
 #--------------------------------------------------------------------------------------------------------
@@ -103,11 +135,23 @@ class main:
             for line in text:
                 print( line.center(spaces) )
 
-    
     # ekran powitalny
     def welcome_screen(self):
         text = ["Eva",self.version,"by Jakub Wawak 2020"]
         self.center_print(text)
 
-# wywolanie glownej funkcji programu
-main()
+    # ekran wprowadzania tekstu
+    def comunication_screen(self):
+
+        # odtad mozna dowolnie edytowac
+        user_input = input(time.asctime()+" >>>")
+        # do tego momentu
+
+        if not user_input:  #sprawdzanie czy wejscie nie jest puste
+            return user_input
+        else:
+            return ""
+
+#--------------------------------------------------------------------------------------------------------
+    # wywolanie glownej funkcji programu
+Main()

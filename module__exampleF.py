@@ -1,7 +1,7 @@
 import time
 
 # remember that name of your class and file has to include 'module__' string 
-class module__mathF:    # change the name of that class, the name must match the name of the file
+class module__exampleF:    # change the name of that class, the name must match the name of the file
 #---------------------------------------------------------------------------------------------------------
 # main prepared functions - do not edit the code or parameters
 
