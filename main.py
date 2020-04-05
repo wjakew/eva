@@ -71,6 +71,11 @@ class Main:
     def program_exit(self):
 
         self.center_print( "Program closing.." )
+        
+
+        for module in self.modules:
+            self.add_to_log(module.log_)
+
         self.close_log_file()
 
         # tutaj przyszle dodatkowe procedury zamkniecia programu
