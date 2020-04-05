@@ -7,16 +7,16 @@ class module__exampleF:    # change the name of that class, the name must match 
 
     invoke_words = []    # list of key words of the module
     name_of_the_class = ""
-    developer_test = 1   
-    
+    developer_test = 0   
+    log_ = []            # object for storing logs from modules
+
     # init function let module start properly
     
     def __init__(self):
-
-        self.log = []   # object for storing logs from modules 
+  
         name_of_the_class = str(self.__class__.__name__ )
         #----------------------DATA-TO-EDIT-FOR-THE-PROGRAMER-----------------------
-        self.version = "v 1.0.0"    # insert your own version number
+        self.version = "v 1.0.1"    # insert your own version number
         self.date = "04.2020"       # insert your own date of publish
         self.short_desc = ""        # insert your short descryption of the module
         #---------------------------------------------------------------------------
@@ -35,15 +35,15 @@ class module__exampleF:    # change the name of that class, the name must match 
     def log(self,text):
 
         if type(text) == str : 
-            self.log.append(text)
+            self.log_.append(text)
 
         elif type(text) == list:
             for line in text:
-                self.log.append(line)
+                self.log_.append(line)
 
     def stop(self):
         self.log("Module " + self.module_name + " stopped.")
-        return self.log
+        return self.log_
 
     # funcion write help for the user about the module
     def help(self):
@@ -89,14 +89,24 @@ class module__exampleF:    # change the name of that class, the name must match 
         if keys.count != 0 :   # here we get at least 1 key
 
             if self.developer_test == 1: 
+
                 print ( "module: " + self.name_of_the_class + " run funcion:")
+                self.log_( self,"module: " + self.name_of_the_class + " run funcion:" )
                 print ( "keys found : "+str(keys))
-                print ( "echo: " + user_input)
+                self.log_( self,"keys found : "+str(keys) )
+                print ( "echo: " + user_input )
+                self.log_( self,"echo: " + user_input )
             
             else:
                 
-                #----------------------DATA-TO-EDIT-FOR-THE-PROGRAMER-----------------------
-                pass # here u can add your code
+                
+                if self.invoke_words.count == 0:
+
+                    self.log_( "No key words in the dictionary." )
+
+                else:
+                #----------------------DATA-TO-EDIT-FOR-THE-PROGRAMER-----------------------    
+
                 #---------------------------------------------------------------------------
 
         else:                                   # no matching keys with that module
