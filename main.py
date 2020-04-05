@@ -19,7 +19,7 @@ class Main:
 
         self.modules = []   # obiekt typu lista na wszystkie niezbedne moduly do pracy
         
-        self.welcome_screen()   #ekran powitalny
+        self.welcome_screen()   # ekran powitalny
 
         # zapis aktualnej sciezki do pliku main i modulow
         self.current_path = os.path.dirname(os.path.abspath(__file__)) + "/main.py"
@@ -45,7 +45,10 @@ class Main:
 
             # tutaj cala logika podawania odpowiedzi i programu
             self.add_to_log("user input >>> "+user_input)
-            print( "echo : " +  user_input )
+            
+            for module in self.modules:
+
+                module.run(module,user_input)
 
         else:
             self.program_exit()
@@ -83,6 +86,7 @@ class Main:
         nazwa = "eva_log__"+time.asctime().replace(" ","")+".txt"
         nazwa.replace(" ","")
         log_file = open ( nazwa,"w" )
+        log_file.write("Log file started. - READY TO LOG\n")
         return log_file
 
     # metoda dodaje linie do pliku loga
@@ -95,6 +99,7 @@ class Main:
 
         elif type(text) == str:
             self.current_log.write(text)
+            self.current_log.write("\n")
             return 1
         else:
             return 0
@@ -120,7 +125,6 @@ class Main:
             if "module__" in obj :
 
                 print ( "Module found : " + obj )
-                
                 # podejscie pierwsze do rozwiazania problemu
 
                 print ( " Trying to import ... ")
@@ -141,13 +145,16 @@ class Main:
                 except Exception as exception:
                     print ( " Module : " + obj + " failed to import.")   
                     print ( " Details: " )
-                    print ( str(type(exception).__name__) )                   
+                    print ( str(type(exception).__name__) ) 
+                    print ( exception.__class__.__name__ )     
+                    print ( exception.__class__.__qualname__ )  
+                print ("")           
                 
                 # na ta chwile wszystkie zaladowane moduly mamy w obiekcie typu lista
         
         if ( self.modules.count == 0 ):
             print ( " No modules found. Check your files." )
-            sys.exit(0)
+            self.program_exit()
         print( "" )
 
     #metoda testujaca wszystkie zaladowane moduly
@@ -163,10 +170,13 @@ class Main:
             except Exception as exception:
                 print ( " WARNING!!!!! Module failed. Check module." )
                 print ( " Details: " )
-                print ( str(type(exception).__name__) )
-
+                print ( "  "+str(type(exception).__name__) )
+                print ( "   "+str(exception.args) )
+                print ("")  
                 self.modules.remove(module) # usuniecie niedzialajacego modulu z puli
         self.center_print("Self test ended : "+ str(count) + " modules ready to use")
+        if( count == 0):
+            self.program_exit()
         print( "" )
 
 #--------------------------------------------------------------------------------------------------------
