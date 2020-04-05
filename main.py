@@ -13,6 +13,10 @@ class Main:
         self.date = "04.2020"
         self.build = hash(self.version)
 
+        self.current_log = self.prepare_log_file() # tworzenie pliku z logiem programu
+
+        self.history = []   # obiekt do zapisu wejscia uzytkownika
+
         self.modules = []   # obiekt typu lista na wszystkie niezbedne moduly do pracy
         
         self.welcome_screen()   #ekran powitalny
@@ -34,12 +38,17 @@ class Main:
 #--------------------------------------------------------------------------------------------------------
     # metody zachowania programu 
 
+    # glowna metoda decydujaca o tym co powinno sie uruchomic a co nie
     def main_brain_(self, user_input):
 
         if user_input != "exit":
+
+            # tutaj cala logika podawania odpowiedzi i programu
+            self.add_to_log("user input >>> "+user_input)
             print( "echo : " +  user_input )
+
         else:
-            sys.exit(0)
+            self.program_exit()
 
     # podstawowa petla programu
     def main_loop_(self):
@@ -55,6 +64,45 @@ class Main:
 
             self.main_brain_(user_input)
 
+    # metoda prawidlowo zamykajaca program
+    def program_exit(self):
+
+        self.center_print( "Program closing.." )
+        self.close_log_file()
+
+        # tutaj przyszle dodatkowe procedury zamkniecia programu
+
+        self.center_print("Program ended.")
+        sys.exit()
+
+#--------------------------------------------------------------------------------------------------------
+    # metody wymagane do zapisu loga
+
+    # metoda otwiera nowy plik loga na kazdym starcie programu
+    def prepare_log_file(self):
+        nazwa = "eva_log__"+time.asctime().replace(" ","")+".txt"
+        nazwa.replace(" ","")
+        log_file = open ( nazwa,"w" )
+        return log_file
+
+    # metoda dodaje linie do pliku loga
+    def add_to_log(self,text):
+        if type(text) == list:
+            for line in text:
+                self.current_log.write(line)
+                self.current_log.write("\n")
+                return 1
+
+        elif type(text) == str:
+            self.current_log.write(text)
+            return 1
+        else:
+            return 0
+    
+    # metoda zamyka plik z logiem
+    def close_log_file(self):
+        self.current_log.write("Program ended - "+time.asctime())
+        self.current_log.close()
 #--------------------------------------------------------------------------------------------------------
     # metody importowania modulow
 
@@ -148,9 +196,9 @@ class Main:
         # do tego momentu
 
         if not user_input:  #sprawdzanie czy wejscie nie jest puste
-            return user_input
-        else:
             return ""
+        else:
+            return user_input
 
 #--------------------------------------------------------------------------------------------------------
     # wywolanie glownej funkcji programu
