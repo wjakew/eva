@@ -7,7 +7,7 @@ class module__exampleF:    # change the name of that class, the name must match 
 
     invoke_words = []    # list of key words of the module
     name_of_the_class = ""
-    developer_test = 0   
+    developer_test = 1   
     log_ = []            # object for storing logs from modules
 
     # init function let module start properly
@@ -40,6 +40,7 @@ class module__exampleF:    # change the name of that class, the name must match 
         elif type(text) == list:
             for line in text:
                 self.log_.append(line)
+        
 
     def stop(self):
         self.log("Module " + self.module_name + " stopped.")
@@ -91,11 +92,11 @@ class module__exampleF:    # change the name of that class, the name must match 
             if self.developer_test == 1: 
 
                 print ( "module: " + self.name_of_the_class + " run funcion:")
-                self.log_( self,"module: " + self.name_of_the_class + " run funcion:" )
+                self.log( self,"module: " + self.name_of_the_class + " run funcion:" )
                 print ( "keys found : "+str(keys))
-                self.log_( self,"keys found : "+str(keys) )
+                self.log( self,"keys found : "+str(keys) )
                 print ( "echo: " + user_input )
-                self.log_( self,"echo: " + user_input )
+                self.log( self,"echo: " + user_input )
             
             else:
                 
@@ -106,7 +107,7 @@ class module__exampleF:    # change the name of that class, the name must match 
 
                 else:
                 #----------------------DATA-TO-EDIT-FOR-THE-PROGRAMER-----------------------    
-
+                    pass
                 #---------------------------------------------------------------------------
 
         else:                                   # no matching keys with that module
