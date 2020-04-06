@@ -50,6 +50,7 @@ class Main:
 
                 module.run(module,user_input)
 
+
         else:
             self.program_exit()
 
@@ -74,8 +75,10 @@ class Main:
         
 
         for module in self.modules:
-            self.add_to_log(module.log_)
-
+            try:
+                self.add_to_log(module.stop( self ))
+            except Exception as e:
+                self.exeption_screen ( e , "Problem with stopping module" )
         self.close_log_file()
 
         # tutaj przyszle dodatkowe procedury zamkniecia programu
@@ -148,11 +151,7 @@ class Main:
                     print ( " Import succeeded." )
 
                 except Exception as exception:
-                    print ( " Module : " + obj + " failed to import.")   
-                    print ( " Details: " )
-                    print ( str(type(exception).__name__) ) 
-                    print ( exception.__class__.__name__ )     
-                    print ( exception.__class__.__qualname__ )  
+                    self.exeption_screen ( exception , " Module : " + obj + " failed to import." )
                 print ("")           
                 
                 # na ta chwile wszystkie zaladowane moduly mamy w obiekcie typu lista
@@ -173,12 +172,9 @@ class Main:
                                 # note: wydaje mi sie ze zostal on juz wykonany metoda getattr ale nie ma w docs
                 count+=1
             except Exception as exception:
-                print ( " WARNING!!!!! Module failed. Check module." )
-                print ( " Details: " )
-                print ( "  "+str(type(exception).__name__) )
-                print ( "   "+str(exception.args) )
-                print ("")  
+                self.exeption_screen( exception,"Module failed. Check module. ")
                 self.modules.remove(module) # usuniecie niedzialajacego modulu z puli
+
         self.center_print("Self test ended : "+ str(count) + " modules ready to use")
         if( count == 0):
             self.program_exit()
@@ -215,6 +211,18 @@ class Main:
         else:
             return user_input
 
+    # ekran prezentowania wyjatku
+    def exeption_screen(self,e,additional_text):
+        self.divider_printing(int(os.get_terminal_size().columns))
+        self.center_print( "WARNING!!! " + additional_text )
+        self.center_print( "EXCEPTION HAPPEN." )
+        print("Details : " + str(type(e).__name__))
+        self.divider_printing(int(os.get_terminal_size().columns))
+    def divider_printing(self, amount):
+        divider = "-"
+        for i in range ( 0, amount ):
+            divider = divider + "-"
+        print ( divider )
 #--------------------------------------------------------------------------------------------------------
     # wywolanie glownej funkcji programu
 Main()
