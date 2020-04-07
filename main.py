@@ -3,6 +3,8 @@ import sys
 import importlib.util   # import bilbioteki odpowiedzialnej za dynamiczny impot modulow
 import gc               # import garbage colector - pozniej potrzebne do pilnowania pamieci po modulach
 import time
+import traceback
+
 class Main:
 #--------------------------------------------------------------------------------------------------------
     # glowny kod programu
@@ -49,6 +51,7 @@ class Main:
             for module in self.modules:
 
                 module.run(module,user_input)
+                print ( str(module.log_) )
 
 
         else:
@@ -76,7 +79,7 @@ class Main:
 
         for module in self.modules:
             try:
-                self.add_to_log(module.stop( self ))
+                self.add_to_log(module.stop( module ))
             except Exception as e:
                 self.exeption_screen ( e , "Problem with stopping module" )
         self.close_log_file()
@@ -98,12 +101,12 @@ class Main:
         return log_file
 
     # metoda dodaje linie do pliku loga
-    def add_to_log(self,text):
+    def add_to_log(self, text):
         if type(text) == list:
             for line in text:
                 self.current_log.write(line)
                 self.current_log.write("\n")
-                return 1
+            return 1
 
         elif type(text) == str:
             self.current_log.write(text)
@@ -217,7 +220,10 @@ class Main:
         self.center_print( "WARNING!!! " + additional_text )
         self.center_print( "EXCEPTION HAPPEN." )
         print("Details : " + str(type(e).__name__))
-        self.divider_printing(int(os.get_terminal_size().columns))
+        #self.divider_printing(int(os.get_terminal_size().columns))
+        traceback.print_exc()
+
+    # rysowanie divaidera na ekranie    
     def divider_printing(self, amount):
         divider = "-"
         for i in range ( 0, amount ):
