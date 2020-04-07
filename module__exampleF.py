@@ -31,7 +31,7 @@ class module__exampleF:    # change the name of that class, the name must match 
     def module_name(self):
         return str(self.__class__.__name__ )
 
-    # fuction for logiing behaviour of the module
+    # fuction for loging behaviour of the module
     def log(self,text):
 
         if type(text) == str : 
@@ -43,7 +43,7 @@ class module__exampleF:    # change the name of that class, the name must match 
         
 
     def stop(self):
-        self.log("Module " + self.module_name + " stopped.")
+        self.log(self, "Module " + str(self.module_name) + " stopped.")
         return self.log_
 
     # funcion write help for the user about the module
