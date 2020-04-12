@@ -51,7 +51,7 @@ class Main:
             for module in self.modules:
 
                 module.run(module,user_input)
-                print ( str(module.log_) )
+                # print ( str(module.log_) ) # wypisywanie loga modulu
 
 
         else:
@@ -201,6 +201,7 @@ class Main:
     def welcome_screen(self):
         text = ["Eva",self.version,"by Jakub Wawak 2020"]
         self.center_print(text)
+        self.center_print(time.asctime())
 
     # ekran wprowadzania tekstu
     def comunication_screen(self):
